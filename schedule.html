@@ -3,12 +3,16 @@
 
 {% block content %}
 
-  		{% for match in matches %}
+      {% for group in groups %}
+      <p><b><u> Группа {{ group.name }} </u></b> </p>
+  		{% for match in group.matches %}
   		<p>
-  		<!--{% if match.start.day < 10 %}0{% endif %}{{ match.start.day }}.{% if match.start.month < 10 %}0{% endif %}{{ match.start.month }}.{{ match.start.year }} -->
-  		{% if match.start.hour < 10 %}0{% endif %}{{ match.start.hour }}:{% if match.start.minute < 10 %}0{% endif %}{{ match.start.minute }}
-  		{{ match.group }}  {{ match.home_team }} - {{ match.guest_team }}
+  		<!--{% if match.start.day < 10 %}0{% endif %}{{ match.start.day }}.{% if match.start.month < 10 %}0{% endif %}{{ match.start.month }}.{{ match.start.year }} \
+  		{% if match.start.hour < 10 %}0{% endif %}{{ match.start.hour }}:{% if match.start.minute < 10 %}0{% endif %}{{ match.start.minute }}-->
+      {{ match.formattedStart }}
+  		<b>{{ match.home_team }} - {{ match.guest_team }}</b>
   		</p>
   		{% endfor %}
+      {% endfor %}
 
 {% endblock %}

@@ -1,6 +1,7 @@
 import os
 import webapp2
 import jinja2
+import urllib
 
 from model import DataProvider
 from google.appengine.ext.webapp import template
@@ -20,7 +21,7 @@ class MatchList(webapp2.RequestHandler):
 
 	def get(self):
 		params = {
-			"matches" : dataProvider.get_matches()
+			"groups" : dataProvider.get_matches_groupped()
 		} 
 		template = JINJA_ENVIRONMENT.get_template('schedule.html')
 		self.response.out.write(template.render(params))
@@ -38,7 +39,17 @@ class UsersList(webapp2.RequestHandler):
 class NewPredict(webapp2.RequestHandler):
 	def get(self):
 		params = {
-			"matches" : dataProvider.get_matches()
+			"groups" : dataProvider.get_matches_groupped()
 		} 
 		template = JINJA_ENVIRONMENT.get_template('new_predict.html')
 		self.response.out.write(template.render(params))
+
+	def post(self):
+		params = self.request.POST
+
+		firstname = params[u'firstname']
+		lastname = params[u'lastname']
+
+		dataProvider.add_user(firstname, lastname)
+
+		self.redirect('/')

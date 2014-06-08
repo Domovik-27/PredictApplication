@@ -4,17 +4,21 @@
 	<head>
 		<title>ЧМ 2014 - Конкурс прогнозов</title>
 		<link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+		{% block header %}
+		{% endblock %}
 	</head>
 
-  	<body>
+  	<body onload="body_loaded()">
 
-		<a href='/'>Результаты прогнозов</a>
-		<a href='/new_predict'>Сделать прогноз</a>
-		<a href='/schedule'>Расписание матчей</a>
-		<a href='/'>Группы</a>
-
-  		{% block content %}
+		<div class="menu_item"><a href='/'>Результаты</a></div>
+		<div class="menu_item"><a href='/new_predict'>Сделать прогноз</a></div>
+		<div class="menu_item"><a href='/schedule'>Матчи</a></div>
+		
+		<div class="content">
+		<br>
+		{% block content %}
   		{% endblock %}
+  		</div>
   	</body>
 </html>
 {% endautoescape %}

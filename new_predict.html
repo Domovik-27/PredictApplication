@@ -1,16 +1,144 @@
 {% extends 'base.html' %}
-      
+ 
+{% block header %}
+<script type="text/javascript">
+
+function keyup(input) {
+	input.value = input.value.replace(/\D+/, '');
+	if (input.value.length > 0) {
+
+		var nextId = getNextId(input.id);
+		var counter = 0;
+
+		while (true) {
+			var nextInput = document.getElementById(nextId);
+			if (nextInput == null) {
+				nextId = "l0";
+				continue;
+			}
+
+			if (nextInput.value.length == 0) {
+				nextInput.focus();
+				break;
+			}
+
+			counter = counter + 1;
+			if (counter == 100) {
+				break;
+			}
+
+			nextId = getNextId(nextId);
+		}
+	}
+};
+
+function getNextId(id) {
+	var nextId = "";
+	if (id.charAt(0) == 'l') {
+		nextId = id.replace('l', 'r');
+	}	
+	else {
+		id = id.replace('r', '');
+		var numId = parseInt(id) + 1;
+		nextId = "l" + String(numId);
+	}
+	return nextId;
+};
+
+function body_loaded() {
+	document.getElementById("firstname").focus();
+}
+
+function form_submit() {
+	var firstname = document.getElementById('firstname').value;
+	if (firstname.length < 1) {
+		alert('Имя не указано');
+		return;
+	}
+
+	var lastname = document.getElementById('lastname').value;
+	if (lastname.length < 1) {
+		alert('Фамилия не указана');
+		return;
+	}
+
+	var result = { "firstname":firstname, "lastname":lastname };
+	for (var i = 0; i < 48; i++) {
+
+		var lId = "l" + String(i);
+		var rId = "r" + String(i);
+
+		var left = document.getElementById(lId).value;
+		var right = document.getElementById(rId).value;
+
+		if (left.length < 1 || right.length < 1) {
+			var match = document.getElementById(String(i)).innerHTML;
+			alert('Не указан счет для матча:\n' + match);
+			return;
+		}
+
+		result[lId] = left;
+		result[rId] = right;
+	}
+
+	post('/new_predict', result);
+}
+
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+</script>
+{% endblock %}
+
 
 {% block content %}
 
-{% for match in matches %}
+<div style="width: 100%">
+<label for="firstname">Имя</label>
+<input type="text" id="firstname" maxlength="50" style="display:block">
+<br>
+
+<label for="lastname">Фамилия</label>
+<input type="text" id="lastname" maxlength="50" style="display:block">
+<br>
+</div>
+
+{% for group in groups %}
+<p><b><u>Группа {{ group.name }}</u></b></p>
+{% for match in group.matches %}
 <p>
 	<div class="match_predict_left">
-		{{ match.home_team }} - {{ match.guest_team }}
+		<label id="{{ match.index }}">{{ match.home_team }} - {{ match.guest_team }}</label>
+		<font style="color:#888">({{ match.formattedStart }})</font>
 	</div>
-	<input class="score" type="edit" id=1{{ match.key.id() }}>
-	<input class="score" type="edit" value={{ match.index }} onkeyup="function(input){var id = input.Id; document.getElementById(id+1).focus();}">
+	<input type="text" id="l{{ match.index }}" class="score" onkeyup="keyup(this)" maxlength="1">
+	<input type="text" id="r{{ match.index }}" class="score" onkeyup="keyup(this)" maxlength="1">
 </p>
 {% endfor %}
+{% endfor %}
+
+<input type="button" value="Подтвердить прогноз" style="width: 200px; height: 40px" onclick="form_submit()">
+<br><br>
 
 {% endblock %}
