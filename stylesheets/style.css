@@ -1,0 +1,13 @@
+body {
+	background-color: #DDD
+}
+
+.match_predict_teams {
+	float: left;
+	text-align: right;
+	background-color: orange;
+}
+
+.score {
+	width: 18px;
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+	<head>
+		<title>ЧМ 2014 - Конкурс прогнозов</title>
+		<link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+	</head>
+
+  	<body>
+
+		<a href='/'>Результаты прогнозов</a>
+		<a href='/new_predict'>Сделать прогноз</a>
+		<a href='/schedule'>Расписание матчей</a>
+		<a href='/'>Группы</a>
+
+  		{% block content %}
+  		{% endblock %}
+  	</body>
+</html>
+{% endautoescape %}

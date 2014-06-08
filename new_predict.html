@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+      
+
+{% block content %}
+
+{% for match in matches %}
+<p>
+	<div class="match_predict_left">
+		{{ match.home_team }} - {{ match.guest_team }}
+	</div>
+	<input class="score" type="edit" id=1{{ match.key.id() }}>
+	<input class="score" type="edit" value={{ match.index }} onkeyup="function(input){var id = input.Id; document.getElementById(id+1).focus();}">
+</p>
+{% endfor %}
+
+{% endblock %}

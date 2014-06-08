@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+      
+
+{% block content %}
+
+  		{% for match in matches %}
+  		<p>
+  		<!--{% if match.start.day < 10 %}0{% endif %}{{ match.start.day }}.{% if match.start.month < 10 %}0{% endif %}{{ match.start.month }}.{{ match.start.year }} -->
+  		{% if match.start.hour < 10 %}0{% endif %}{{ match.start.hour }}:{% if match.start.minute < 10 %}0{% endif %}{{ match.start.minute }}
+  		{{ match.group }}  {{ match.home_team }} - {{ match.guest_team }}
+  		</p>
+  		{% endfor %}
+
+{% endblock %}
