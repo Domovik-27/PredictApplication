@@ -2,6 +2,7 @@ import os
 import webapp2
 import jinja2
 import urllib
+import time
 
 from model import DataProvider
 from google.appengine.ext.webapp import template
@@ -30,7 +31,9 @@ class MatchList(webapp2.RequestHandler):
 class UsersList(webapp2.RequestHandler):
 	def get(self):
 		params = {
-			"users" : dataProvider.get_users()
+			"users" : dataProvider.get_users(),
+			"matches" : dataProvider.get_matches(),
+			"predictions" : dataProvider.get_predictions()
 		} 
 		template = JINJA_ENVIRONMENT.get_template('users.html')
 		self.response.out.write(template.render(params))
@@ -47,9 +50,10 @@ class NewPredict(webapp2.RequestHandler):
 	def post(self):
 		params = self.request.POST
 
-		firstname = params[u'firstname']
-		lastname = params[u'lastname']
+		#firstname = params[u'firstname']
+		#lastname = params[u'lastname']
 
-		dataProvider.add_user(firstname, lastname)
+		dataProvider.add_prediction(params)
 
+		time.sleep(0.5)
 		self.redirect('/')

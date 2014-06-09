@@ -23,3 +23,20 @@ body {
 	width: 100%;
 	float: left;
 }
+
+table, th, td {
+	border: solid 1px #777;
+}
+
+th, td {
+	padding: 5px;
+	text-align: center;
+}
+
+.left_aligned_cell {
+	text-align: left;
+}
+
+.users_table {
+	border-spacing: 0;
+}
