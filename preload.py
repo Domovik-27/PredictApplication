@@ -71,7 +71,7 @@ class DataPreloader():
 		Match(
 			group = "F",
 			home_team="Аргентина",
-			guest_team = "Босния и Герцеговина",
+			guest_team = "Босния",
 			start = datetime.combine(date(2014,06,16),time(1,0))
 		),
 		Match(
@@ -179,7 +179,7 @@ class DataPreloader():
 		Match(
 			group = "F",
 			home_team="Нигерия",
-			guest_team = "Босния и Герцеговина",
+			guest_team = "Босния",
 			start = datetime.combine(date(2014,06,22),time(1,0))
 		),
 		Match(
@@ -256,7 +256,7 @@ class DataPreloader():
 		),
 		Match(
 			group = "F",
-			home_team="Босния и Герцеговина",
+			home_team="Босния",
 			guest_team = "Иран",
 			start = datetime.combine(date(2014,06,25),time(19,0))
 		),

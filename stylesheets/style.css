@@ -1,5 +1,5 @@
 body {
-	background-color: #DDD
+	background-color: #FFF
 }
 
 .match_predict_teams {
@@ -25,7 +25,7 @@ body {
 }
 
 table, th, td {
-	border: solid 1px #777;
+	border: solid 1px #AAA;
 }
 
 th, td {
@@ -39,4 +39,29 @@ th, td {
 
 .users_table {
 	border-spacing: 0;
+}
+
+.guess_full {
+	background-color: #2C2;
+	font-weight: bold;
+}
+
+.guess_result {
+	background-color: yellow;
+	font-weight: bold;
+}
+
+.guess_score {
+	background-color: orange;
+	font-weight: bold;
+}
+
+.guess_nothing {
+	background-color: #F44;
+	font-weight: bold;
+}
+
+.guess_none {
+	background-color: #EEE;
+	font-weight: bold;
 }

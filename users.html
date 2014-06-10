@@ -6,19 +6,40 @@
 
 <table class="users_table">
 <tr>
-<th>Match</th>
-<th>Score</th>
+<th>Матч</th>
+<th>Счет</th>
 {% for user in users %}
-<th colspan="1">{{user.lastname}}</th>
+<th colspan="2">{{user.lastname}}</th>
 {% endfor %}
 </tr>
 
 {% for prediction in predictions %}
 <tr>
-  <td class="left_aligned_cell">{{ prediction.match }}</td>
-  <td>{{ prediction.score }}</td>
+  <td class="left_aligned_cell"><b>{{ prediction.match }}</b></td>
+  <td><b>{{ prediction.score }}</b></td>
   {% for ps in prediction.pred_scores %}
-    <td>{{ ps }}</td>
+      {% if ps.points == 4 %}
+        <td class="guess_full">{{ ps.points }}</td>
+        <td class="guess_full">{{ ps.score }}</td>
+      {% else %}
+        {% if ps.points == 2 %}
+          <td class="guess_result">{{ ps.points }}</td>
+          <td class="guess_result">{{ ps.score }}</td>
+        {% else %}
+          {% if ps.points == 1 %}
+            <td class="guess_score">{{ ps.points }}</td>
+            <td class="guess_score">{{ ps.score }}</td>
+          {% else %}
+            {% if ps.points == 0 %}
+              <td class="guess_nothing">{{ ps.points }}</td>
+              <td class="guess_nothing">{{ ps.score }}</td>
+            {% else %}
+              <td class="guess_none">{{ ps.points }}</td>
+              <td class="guess_none">{{ ps.score }}</td>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
   {% endfor %}
 </tr>
 {% endfor %}
@@ -43,5 +64,6 @@
 -->
 
 </table>
+<br><br>
 
 {% endblock %}

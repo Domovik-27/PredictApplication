@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 import os
 import webapp2
 import jinja2
@@ -32,7 +35,6 @@ class UsersList(webapp2.RequestHandler):
 	def get(self):
 		params = {
 			"users" : dataProvider.get_users(),
-			"matches" : dataProvider.get_matches(),
 			"predictions" : dataProvider.get_predictions()
 		} 
 		template = JINJA_ENVIRONMENT.get_template('users.html')
@@ -55,5 +57,15 @@ class NewPredict(webapp2.RequestHandler):
 
 		dataProvider.add_prediction(params)
 
-		time.sleep(0.5)
+		time.sleep(0.25)
+		self.redirect('/')
+
+class MatchPlayed(webapp2.RequestHandler):
+	def get(self):
+		h = self.request.GET['h']
+		g = self.request.GET['g']
+		
+		dataProvider.match_played(h, g)
+
+		time.sleep(0.1)
 		self.redirect('/')

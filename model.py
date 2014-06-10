@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from google.appengine.ext import ndb
 
 
@@ -21,6 +24,7 @@ class Match(ndb.Model):
 	def setFormattedStart(self):
 		self.formattedStart = self.start.strftime("%d/%m  %H:%M")
 
+
 class Prediction(ndb.Model):
 	"""Prediction entity"""
 	user_key = ndb.KeyProperty()
@@ -31,6 +35,14 @@ class Prediction(ndb.Model):
 class GroupAndMatches():
 	name = ""
 	matches = []
+
+class UserPrediction():
+	score = None
+	points = None
+	def setScore(self, score):
+		self.score = score
+	def setPoints(self, points):
+		self.points = points
 
 class VisualPrediction():
 	match = None
@@ -148,19 +160,53 @@ class DataProvider():
 		for match in matches:
 			vpred = VisualPrediction()
 
-			vpred.setMatch(match.home_team + " - " + match.guest_team)
-			if match.home_goals and match.guest_goals:
-				vpred.setScore(str(match.home_goals) + "-" + str(match.guest_goals))
+			vpred.setMatch(match.group + ": " + match.home_team + " - " + match.guest_team)
+			if match.home_goals == None:
+				vpred.setScore(match.formattedStart)
 			else:
-				vpred.setScore("Not played")
+				vpred.setScore(str(match.home_goals) + "-" + str(match.guest_goals))
 
 			#query = Prediction.query(Prediction.match_key == match.key)
 			for user in users:
 				pred = Prediction.query(ndb.AND(Prediction.match_key==match.key,
 					Prediction.user_key==user.key)).fetch()[0]
-				vpred.addPredScore(str(pred.home_goals) + "-" + str(pred.guest_goals))
+
+				upred = UserPrediction()
+				upred.setScore(str(pred.home_goals) + "-" + str(pred.guest_goals))
+				
+				pts = self.points_by_score(match.home_goals,match.guest_goals,pred.home_goals,pred.guest_goals)
+				upred.setPoints(pts)
+
+				vpred.addPredScore(upred)
 
 			result.append(vpred)
 
 		return result
-		
+	
+	def points_by_score(self, m_home, m_guest, u_home, u_guest):
+		if m_home == None or m_guest == None or u_home == None or u_guest == None:
+			return "-"
+
+		if m_home == u_home and m_guest == u_guest:
+			return 4
+
+		if m_home > m_guest and u_home > u_guest:
+			return 2
+		if m_home < m_guest and u_home < u_guest:
+			return 2
+		if m_home == m_guest and u_home == u_guest:
+			return 2
+
+		if m_home == u_guest and m_guest == u_home:
+			return 1
+
+		return 0
+
+	def match_played(self, home_goals, guest_goals):
+		matches = Match.query().order(Match.start).fetch()
+		for match in matches:
+			if match.home_goals == None:
+				match.home_goals = int(home_goals)
+				match.guest_goals = int(guest_goals)
+				match.put()
+				return None
