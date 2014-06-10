@@ -1,69 +1,33 @@
 {% extends 'base.html' %}
-      
 
 {% block content %}
 
-
 <table class="users_table">
+
 <tr>
-<th>Матч</th>
-<th>Счет</th>
-{% for user in users %}
-<th colspan="2">{{user.lastname}}</th>
-{% endfor %}
+<th class="title_cell">Игрок</th>
+<th colspan="2" class="title_cell">Исход + Счет</th>
+<th colspan="2" class="title_cell">Только Исход</th>
+<th colspan="2" class="title_cell">Только Счет</th>
+<th colspan="2" class="title_cell">Не угадано</th>
+<th colspan="2" class="title_cell">Результат</th>
 </tr>
 
-{% for prediction in predictions %}
-<tr>
-  <td class="left_aligned_cell"><b>{{ prediction.match }}</b></td>
-  <td><b>{{ prediction.score }}</b></td>
-  {% for ps in prediction.pred_scores %}
-      {% if ps.points == 4 %}
-        <td class="guess_full">{{ ps.points }}</td>
-        <td class="guess_full">{{ ps.score }}</td>
-      {% else %}
-        {% if ps.points == 2 %}
-          <td class="guess_result">{{ ps.points }}</td>
-          <td class="guess_result">{{ ps.score }}</td>
-        {% else %}
-          {% if ps.points == 1 %}
-            <td class="guess_score">{{ ps.points }}</td>
-            <td class="guess_score">{{ ps.score }}</td>
-          {% else %}
-            {% if ps.points == 0 %}
-              <td class="guess_nothing">{{ ps.points }}</td>
-              <td class="guess_nothing">{{ ps.score }}</td>
-            {% else %}
-              <td class="guess_none">{{ ps.points }}</td>
-              <td class="guess_none">{{ ps.score }}</td>
-            {% endif %}
-          {% endif %}
-        {% endif %}
-      {% endif %}
-  {% endfor %}
-</tr>
-{% endfor %}
-
-<!--
-{% for match in matches %}
-<tr>
-<td class="left_aligned_cell">{{ match.home_team }} - {{ match.guest_team }}</td>
-<td>
-  {% if match.home_goals %}
-  {{ match.home_goals }}-{{ match.guest_goals }}
-  {% else %}
-  Not played
-  {% endif %}
-</td>
 {% for user in users %}
-<td>2-1</td>
-<td>4</td>
-{% endfor %}
+<tr>
+<td class="left_aligned_cell"><b>{{ user.firstname }} {{ user.lastname }}</b></td>
+<td class="guess_full">{{ user.fullCount }}</td>
+<td class="guess_full">{{ user.fullPercent }}%</td>
+<td class="guess_result">{{ user.resultCount }}</td>
+<td class="guess_result">{{ user.resultPercent }}%</td>
+<td class="guess_score">{{ user.scoreCount }}</td>
+<td class="guess_score">{{ user.scorePercent }}%</td>
+<td class="guess_nothing">{{ user.nothingCount }}</td>
+<td class="guess_nothing">{{ user.nothingPercent }}%</td>
+<td><b>{{ user.total }}</b></td>
 </tr>
 {% endfor %}
--->
 
 </table>
-<br><br>
 
 {% endblock %}

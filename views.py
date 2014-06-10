@@ -34,12 +34,19 @@ class MatchList(webapp2.RequestHandler):
 class UsersList(webapp2.RequestHandler):
 	def get(self):
 		params = {
-			"users" : dataProvider.get_users(),
-			"predictions" : dataProvider.get_predictions()
+			"users" : dataProvider.get_users_table()
 		} 
 		template = JINJA_ENVIRONMENT.get_template('users.html')
 		self.response.out.write(template.render(params))
 
+class PredictionsDetailed(webapp2.RequestHandler):
+	def get(self):
+		params = {
+			"users" : dataProvider.get_users(),
+			"predictions" : dataProvider.get_predictions()
+		} 
+		template = JINJA_ENVIRONMENT.get_template('predictions_detailed.html')
+		self.response.out.write(template.render(params))
 
 class NewPredict(webapp2.RequestHandler):
 	def get(self):

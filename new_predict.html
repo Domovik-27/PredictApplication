@@ -115,11 +115,11 @@ function post(path, params, method) {
 {% block content %}
 
 <div style="width: 100%">
-<label for="firstname">Имя</label>
+<label for="firstname"><b>Имя</b></label>
 <input type="text" id="firstname" maxlength="50" style="display:block">
 <br>
 
-<label for="lastname">Фамилия</label>
+<label for="lastname"><b>Фамилия</b></label>
 <input type="text" id="lastname" maxlength="50" style="display:block">
 <br>
 </div>
@@ -129,8 +129,8 @@ function post(path, params, method) {
 {% for match in group.matches %}
 <p>
 	<div class="match_predict_left">
-		<label id="{{ match.index }}">{{ match.home_team }} - {{ match.guest_team }}</label>
-		<font style="color:#888">({{ match.formattedStart }})</font>
+		<label id="{{ match.index }}"><b>{{ match.home_team }} - {{ match.guest_team }}</b></label>
+		<font style="color:#888"><b>({{ match.formattedStart }})</b></font>
 	</div>
 	<input type="text" id="l{{ match.index }}" class="score" onkeyup="keyup(this)" maxlength="1">
 	<input type="text" id="r{{ match.index }}" class="score" onkeyup="keyup(this)" maxlength="1">

@@ -61,6 +61,40 @@ class VisualPrediction():
 	def addPredScore(self, pred_score):
 		self.pred_scores.append(pred_score)
 
+class VisualUser():
+	fullCount = None
+	fullPercent = None
+	resultCount = None
+	resultPercent = None
+	scoreCount = None
+	scorePercent = None
+	nothingCount = None
+	nothingPercent = None
+	total = None
+
+	firstname = None
+	lastname = None
+
+	def setFull(self, full_cnt, full_percent):
+		self.fullCount = full_cnt
+		self.fullPercent = full_percent
+	def setResult(self, result_cnt, result_percent):
+		self.resultCount = result_cnt
+		self.resultPercent = result_percent
+	def setScore(self, score_cnt, score_percent):
+		self.scoreCount = score_cnt
+		self.scorePercent = score_percent
+	def setNothing(self, nothing_cnt, nothing_percent):
+		self.nothingCount = nothing_cnt
+		self.nothingPercent = nothing_percent
+	def setTotal(self, total):
+		self.total = total
+
+	def setFirstname(self, firstname):
+		self.firstname = firstname
+	def setLastname(self, lastname):
+		self.lastname = lastname
+
 
 from preload import DataPreloader
 preloader = DataPreloader()
@@ -210,3 +244,62 @@ class DataProvider():
 				match.guest_goals = int(guest_goals)
 				match.put()
 				return None
+
+	def get_users_table(self):
+		table = []
+
+		users = self.get_users()
+		matches = self.get_matches()
+
+		for user in users:
+			full = 0
+			result = 0
+			score = 0
+			nothing = 0
+			total = 0
+
+			for match in matches:
+				pred = Prediction.query(ndb.AND(Prediction.match_key==match.key,
+					Prediction.user_key==user.key)).fetch()[0]
+				if pred.home_goals == None:
+					continue
+
+				pts = self.points_by_score(match.home_goals, match.guest_goals, pred.home_goals, pred.guest_goals)
+				if pts == 4:
+					full = full + 1
+				else:
+					if pts == 2:
+						result = result + 1
+					else:
+						if pts == 1:
+							score = score + 1
+						else:
+							if pts == 0:
+								nothing = nothing + 1
+				total = total + 1
+
+			vuser = VisualUser()
+			vuser.setFirstname(user.firstname)
+			vuser.setLastname(user.lastname)
+
+			if total > 0:
+				fp = (int)(100 * (float)(full) / total)
+				rp = (int)(100 * (float)(result) / total)
+				sp = (int)(100 * (float)(score) / total)
+				np = (int)(100 * (float)(nothing) / total)
+
+				vuser.setFull(full, fp)
+				vuser.setResult(result, rp)
+				vuser.setScore(score, sp)
+				vuser.setNothing(nothing, np)
+			else:
+				vuser.setFull(0,0)
+				vuser.setResult(0,0)
+				vuser.setScore(0,0)
+				vuser.setNothing(0,0)
+
+			vuser.setTotal(full*4 + result*2 + score*1)
+			table.append(vuser)
+
+		table = sorted(table, key=lambda vuser:-vuser.total)
+		return table
