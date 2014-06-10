@@ -224,14 +224,14 @@ class DataProvider():
 		if m_home == u_home and m_guest == u_guest:
 			return 4
 
-		if m_home > m_guest and u_home > u_guest:
-			return 2
-		if m_home < m_guest and u_home < u_guest:
-			return 2
-		if m_home == m_guest and u_home == u_guest:
+		if m_home-m_guest == u_home-u_guest:
 			return 2
 
-		if m_home == u_guest and m_guest == u_home:
+		if m_home > m_guest and u_home > u_guest:
+			return 1
+		if m_home < m_guest and u_home < u_guest:
+			return 1
+		if m_home == m_guest and u_home == u_guest:
 			return 1
 
 		return 0
@@ -288,10 +288,15 @@ class DataProvider():
 				sp = (int)(100 * (float)(score) / total)
 				np = (int)(100 * (float)(nothing) / total)
 
-				vuser.setFull(full, fp)
-				vuser.setResult(result, rp)
-				vuser.setScore(score, sp)
-				vuser.setNothing(nothing, np)
+				fstr = str(full) + " x 4 = " + str(full*4)
+				rstr = str(result) + " x 2 = " + str(result*2)
+				sstr = str(score) + " x 1 = " + str(score)
+				nstr = str(nothing) + " x 0 = 0"
+
+				vuser.setFull(fstr, fp)
+				vuser.setResult(rstr, rp)
+				vuser.setScore(sstr, sp)
+				vuser.setNothing(nstr, np)
 			else:
 				vuser.setFull(0,0)
 				vuser.setResult(0,0)

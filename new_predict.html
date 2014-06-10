@@ -125,20 +125,22 @@ function post(path, params, method) {
 </div>
 
 {% for group in groups %}
-<p><b><u>Группа {{ group.name }}</u></b></p>
+<p><b><u><font style="color:#D44; size:130%">Группа {{ group.name }}</font></u></b></p>
 {% for match in group.matches %}
 <p>
 	<div class="match_predict_left">
-		<label id="{{ match.index }}"><b>{{ match.home_team }} - {{ match.guest_team }}</b></label>
+		<label id="{{ match.index }}">
+			<b>{{ match.home_team }} - {{ match.guest_team }}</b>
+		</label>
 		<font style="color:#888"><b>({{ match.formattedStart }})</b></font>
 	</div>
-	<input type="text" id="l{{ match.index }}" class="score" onkeyup="keyup(this)" maxlength="1">
+	<input type="text" id="l{{ match.index }}" class="score" onkeyup="keyup(this)" maxlength="1"> -
 	<input type="text" id="r{{ match.index }}" class="score" onkeyup="keyup(this)" maxlength="1">
 </p>
 {% endfor %}
 {% endfor %}
 
-<input type="button" value="Подтвердить прогноз" style="width: 200px; height: 40px" onclick="form_submit()">
+<input type="button" value="Подтвердить прогноз" style="width: 250px; height: 60px; font-size:125%" onclick="form_submit()">
 <br><br>
 
 {% endblock %}

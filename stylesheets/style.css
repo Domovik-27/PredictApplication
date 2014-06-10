@@ -1,4 +1,5 @@
 body {
+	font: 110% arial;
 	background-image: url('cup.jpg');
 }
 
@@ -9,6 +10,7 @@ body {
 }
 
 .score {
+	font-size: 120%;
 	width: 30px;
 	text-align: center;
 }
@@ -31,6 +33,7 @@ table, th, td {
 th, td {
 	padding: 5px;
 	text-align: center;
+	background-color: #FFF;
 }
 
 .left_aligned_cell {
@@ -68,4 +71,9 @@ th, td {
 
 .title_cell {
 	background-color: #DDD;
+}
+
+.match_predict_left, #firstname, #lastname {
+	color: #33D;
+	font-size: 120%;
 }
