@@ -44,24 +44,17 @@
 </tr>
 {% endfor %}
 
-<!--
-{% for match in matches %}
 <tr>
-<td class="left_aligned_cell">{{ match.home_team }} - {{ match.guest_team }}</td>
-<td>
-  {% if match.home_goals %}
-  {{ match.home_goals }}-{{ match.guest_goals }}
-  {% else %}
-  Not played
-  {% endif %}
-</td>
+<td colspan="2" rowspan="2"><b>ИТОГО</b></td>
 {% for user in users %}
-<td>2-1</td>
-<td>4</td>
+<th class="title_cell" colspan="2">{{user.lastname}}</th>
 {% endfor %}
 </tr>
+<tr>
+{% for total in totals %}
+<td colspan="2"><b>{{ total.total }}</b></td>
 {% endfor %}
--->
+</tr>
 
 </table>
 <br><br>

@@ -34,7 +34,7 @@ class MatchList(webapp2.RequestHandler):
 class UsersList(webapp2.RequestHandler):
 	def get(self):
 		params = {
-			"users" : dataProvider.get_users_table()
+			"users" : dataProvider.get_users_table_sorted()
 		} 
 		template = JINJA_ENVIRONMENT.get_template('users.html')
 		self.response.out.write(template.render(params))
@@ -43,7 +43,8 @@ class PredictionsDetailed(webapp2.RequestHandler):
 	def get(self):
 		params = {
 			"users" : dataProvider.get_users(),
-			"predictions" : dataProvider.get_predictions()
+			"predictions" : dataProvider.get_predictions(),
+			"totals" : dataProvider.get_users_table()
 		} 
 		template = JINJA_ENVIRONMENT.get_template('predictions_detailed.html')
 		self.response.out.write(template.render(params))
@@ -75,4 +76,11 @@ class MatchPlayed(webapp2.RequestHandler):
 		dataProvider.match_played(h, g)
 
 		time.sleep(0.1)
+		self.redirect('/')
+
+class ClearMatches(webapp2.RequestHandler):
+	def get(self):
+		dataProvider.clear_matches()
+
+		time.sleep(0.25)
 		self.redirect('/')

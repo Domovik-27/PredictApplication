@@ -245,6 +245,11 @@ class DataProvider():
 				match.put()
 				return None
 
+	def get_users_table_sorted(self):
+		table = self.get_users_table()
+		table = sorted(table, key=lambda vuser:-vuser.total)
+		return table
+
 	def get_users_table(self):
 		table = []
 
@@ -260,7 +265,11 @@ class DataProvider():
 
 			for match in matches:
 				pred = Prediction.query(ndb.AND(Prediction.match_key==match.key,
-					Prediction.user_key==user.key)).fetch()[0]
+					Prediction.user_key==user.key)).fetch()
+				if len(pred) < 1:
+					continue
+					
+				pred = pred[0]
 				if pred.home_goals == None:
 					continue
 
@@ -306,5 +315,19 @@ class DataProvider():
 			vuser.setTotal(full*4 + result*2 + score*1)
 			table.append(vuser)
 
-		table = sorted(table, key=lambda vuser:-vuser.total)
 		return table
+
+	def clear_matches(self):
+		matches = self.get_matches()
+		for m in matches:
+			m.home_goals = None
+			m.guest_goals = None
+			m.put()
+
+		#keys = [m.key for m in self.get_matches()]
+		#
+		#for k in keys:
+		#	preds = Prediction.query(Prediction.match_key==k).fetch()
+		#	for p in preds:
+		#		p.key.delete()
+		#	k.delete()

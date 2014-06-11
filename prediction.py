@@ -1,6 +1,6 @@
 import webapp2
 
-from views import MatchList, UsersList, PredictionsDetailed, NewPredict, MatchPlayed
+from views import MatchList, UsersList, PredictionsDetailed, NewPredict, MatchPlayed, ClearMatches
 
 
 application = webapp2.WSGIApplication([
@@ -8,5 +8,6 @@ application = webapp2.WSGIApplication([
     ('/details', PredictionsDetailed),
     ('/new_predict', NewPredict),
     ('/schedule', MatchList),
-    #('/addmatch', MatchPlayed)
+    ('/addmatch', MatchPlayed),
+    ('/clearmatches', ClearMatches)
 ], debug=True)
